@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyApp1</string>
+    <string name="btn_ok">确定</string>
+    <string name="editText1">名字</string>
+    <string name="textView1">请输入</string>
+    <string name="imageBotton">TODO</string>
+    <string name="login_button1">确定</string>
+    <string name="birth_textView">生日贺卡</string>
+    <string name="birth_multilineText">写下生日祝福</string>
+</resources>

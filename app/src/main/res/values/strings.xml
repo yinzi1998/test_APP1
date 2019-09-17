@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MyApp1</string>
+    <string name="btn_ok">OK</string>
+    <string name="editText1">name</string>
+    <string name="imageBotton">TODO</string>
+    <string name="textView1">Input</string>
+    <string name="login_button1">OK</string>
+    <string name="birth_textView">Birthday Card</string>
+    <string name="birth_multilineText">Best Wish To You</string>
+</resources>
