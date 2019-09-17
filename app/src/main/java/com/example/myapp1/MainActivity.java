@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.course_2_2_1);
         //TextView tx1 = findViewById(R.id.textView6);
         //tx1.setText("write with java");
+        //for commit
 
         //EditText input=findViewById(R.id.editText4);
        // String str=input.getText().toString();
