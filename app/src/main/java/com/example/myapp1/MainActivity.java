@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         //EditText input=findViewById(R.id.editText4);
        // String str=input.getText().toString();
 
-        Button btn=findViewById(R.id.button3);
+        //Button btn=findViewById(R.id.button3);
         //btn.setOnClickListener(this);
         /**btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,15 +34,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void printText(View view) {
+        Button btn3=findViewById(R.id.button3);
+        Button btn4=findViewById(R.id.button4);
         Log.i(TAG,"onClick: ");
         int id=view.getId();
-        if(id==3) {
+        if(id==btn3.getId()) {
             EditText input = findViewById(R.id.editText4);
             String str = input.getText().toString();
             TextView tx1 = findViewById(R.id.textView6);
             tx1.setText(str+"button3");
         }
-        else if(id==4) {
+        else if(id==btn4.getId()) {
             EditText input = findViewById(R.id.editText4);
             String str = input.getText().toString();
             TextView tx1 = findViewById(R.id.textView6);
