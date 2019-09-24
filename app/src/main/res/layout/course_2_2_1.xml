@@ -11,16 +11,10 @@
     >
 
 
-    <TextView
-        android:hint="@string/textView1"
-        android:id="@+id/textView6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
-         />
 
     <EditText
-        android:hint="@string/editText1"
+        android:hint="@string/etext_temperature"
         android:id="@+id/editText4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,12 +27,12 @@
         android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btn_ok" />
+        android:text="@string/btn_transfer" />
 
-    <Button
-        android:onClick="printText"
-        android:id="@+id/button4"
+    <TextView
+        android:id="@+id/textView6"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_ok" />
+        android:layout_height="61dp"
+        android:hint="@string/textView1"
+        android:textSize="26dp" />
 </LinearLayout>

@@ -3,9 +3,23 @@
     <string name="app_name">MyApp1</string>
     <string name="btn_ok">确定</string>
     <string name="editText1">名字</string>
-    <string name="textView1">请输入</string>
+    <string name="textView1">结果：</string>
     <string name="imageBotton">TODO</string>
     <string name="login_button1">确定</string>
     <string name="birth_textView">生日贺卡</string>
     <string name="birth_multilineText">写下生日祝福</string>
+    <string name="btn_transfer">转换为华氏度</string>
+    <string name="etext_temperature">请输入温度</string>
+    <string name="btn_point1">+1 分</string>
+    <string name="btn_point2">+2 分</string>
+    <string name="btn_point3">+3 分</string>
+    <string name="btn_reset">重置</string>
+    <string name="etext_num">零</string>
+    <string name="etext_team2">队伍B</string>
+    <string name="etext_team">队伍A</string>
+    <string name="etext_rmb">请输入人民币金额</string>
+    <string name="btn_dollar">美元</string>
+    <string name="btn_euro">欧元</string>
+    <string name="btn_won">韩元</string>
+    <string name="btn_config">配置汇率</string>
 </resources>
