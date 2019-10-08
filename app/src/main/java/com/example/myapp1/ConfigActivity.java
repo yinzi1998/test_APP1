@@ -23,6 +23,7 @@ public class ConfigActivity extends AppCompatActivity {
     float get_euro = 0;
     float get_won = 0;
 
+    //加载页面时调用的方法
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +48,9 @@ public class ConfigActivity extends AppCompatActivity {
         Log.i(TAG,"openOne: euro_rate=" + get_euro);
         Log.i(TAG,"openOne: won_rate=" + get_won);
 
-    }//加载页面时调用的方法
+    }
 
+    //汇率配置config界面的方法
     public void config(View view){
         int id = view.getId();
         if(id == btn12.getId()){

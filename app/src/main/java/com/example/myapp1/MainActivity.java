@@ -28,19 +28,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-
 public class MainActivity extends AppCompatActivity implements Runnable{
     private static final String TAG = "MainActivity";
     float dollar_rate;
     float euro_rate;
     float won_rate;
-
     Handler handler;
 
+    //创造页面，加载页面布局等时调用的方法，包括子进程
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.course_3_1_2);
+        Log.i(TAG, "onCreate: ");
 
         Thread t = new Thread(this); //this表示当前接口Runable的run()方法，定义了一个线程t
         t.start();
@@ -75,8 +75,73 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         };
 
 
-    }//加载页面时调用的方法，包括子进程
+    }
 
+    //重新激活，如电话结束后
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart: ");
+    }//
+
+    //用户唤醒，onStart之后，需要用户唤醒才可以继续运行
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume: ");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "onRestart: ");
+    }
+
+    //暂停，如有一个电话来了
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause: ");
+    }
+
+    //onPause之后就是onStop
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop: ");
+    }
+
+    //销毁，释放资源，应用完全死亡
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy: ");
+    }
+
+    //处理暂停时，如旋转时，数据丢失的问题
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState: ");
+        //ab两队计分的数据存入bundle中
+        String scorea = ((EditText)findViewById(R.id.editText10)).getText().toString();
+        String scoreb = ((EditText)findViewById(R.id.editText11)).getText().toString();
+        outState.putString("teama_score",scorea);
+        outState.putString("teamb_score",scoreb);
+    }
+
+    //还原暂停后的数据，和onSaveInstanceState方法相对应
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.i(TAG, "onRestoreInstanceState: ");
+        String scorea = savedInstanceState.getString("teama_score");
+        String scoreb = savedInstanceState.getString("teamb_score");
+        ((EditText)findViewById(R.id.editText10)).setText(scorea);
+        ((EditText)findViewById(R.id.editText11)).setText(scoreb);
+    }
+
+    //接受跳转界面的finish()数据的方法
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -86,15 +151,17 @@ public class MainActivity extends AppCompatActivity implements Runnable{
             euro_rate = sp2.getFloat("euro_rate",0.1276f);
             won_rate = sp2.getFloat("won_rate",167.8471f);
         }
-    } //接受数据的方法
+    }
 
+    //加载菜单项的方法
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //return super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_1,menu);
         return true;
-    }//加载菜单项的方法
+    }
 
+    //菜单项的处理事件
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.item1){
@@ -108,8 +175,9 @@ public class MainActivity extends AppCompatActivity implements Runnable{
             output.setText("你打开了Item3");
         }//菜单项3
         return super.onOptionsItemSelected(item);
-    }//菜单项的处理事件
+    }
 
+    //汇率转换
     public void money(View view) {
         EditText input = findViewById(R.id.editText8);
         String str_rmb = input.getText().toString();
@@ -234,8 +302,9 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         }//汇率配置界面
 
 
-    }//汇率转换
+    }
 
+    //course3_1_2两支队伍计分
     public void point(View view) {
         Button btn18 = findViewById(R.id.button18);
         Button btn19 = findViewById(R.id.button19);
@@ -289,8 +358,9 @@ public class MainActivity extends AppCompatActivity implements Runnable{
             textB_num.setText("0");
         }
 
-    } //course3_1_2两支队伍计分
+    }
 
+    //course_3_1_1温度转为华氏度
     public void printText(View view) {
         Button btn3=findViewById(R.id.button3);
         Log.i(TAG,"onClick: ");
@@ -318,8 +388,9 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                 }
             }
         }
-    }//course_3_1_1温度转为华氏度
+    }
 
+    //子线程中需要执行的代码，读取网页信息
     @Override
     public void run() {
         Log.i(TAG,"run: run().....");
@@ -389,8 +460,9 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         //msg.obj = "Hello from run()";
         //handler.sendMessage(msg);
 
-    }//子线程中需要执行的代码，读取网页信息
+    }
 
+    //把InputStream转换成String的方法
     private String inputStream2String(InputStream inputStream) throws IOException {
         final int bufferSize = 1024;
         final char[] buffer = new char[bufferSize];
@@ -403,5 +475,5 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         }
         return out.toString();
 
-    }//把InputStream转换成String的方法
+    }
 }
