@@ -1,13 +1,11 @@
 package com.example.myapp1;
 
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,32 +15,76 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
+
+public class MainActivity extends AppCompatActivity implements Runnable{
     private static final String TAG = "MainActivity";
-    double dollar_rate = 0.1406;
-    double euro_rate = 0.1276;
-    double won_rate = 167.8471;
+    float dollar_rate;
+    float euro_rate;
+    float won_rate;
+
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.course_3_1_3);
-        /**btn.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
+        setContentView(R.layout.course_3_1_2);
 
-        }
-        });**/
-    }//加载页面时调用的方法
+        Thread t = new Thread(this); //this表示当前接口Runable的run()方法，定义了一个线程t
+        t.start();
+
+        handler = new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == 5){
+                    Bundle bdl = (Bundle) msg.obj;
+                    dollar_rate = bdl.getFloat("web_dollar_rate");
+                    euro_rate = bdl.getFloat("web_euro_rate");
+                    won_rate = bdl.getFloat("web_won_rate");
+
+                    Log.i(TAG,"handleMessage: dollar_rate " + dollar_rate);
+                    Log.i(TAG,"handleMessage: euro_rate " + euro_rate);
+                    Log.i(TAG,"handleMessage: won_rate " + won_rate);
+
+                    //写到myrate.xml中
+                    SharedPreferences sp1 = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor ed1 = sp1.edit();
+                    ed1.putFloat("dollar_rate",dollar_rate);
+                    ed1.putFloat("euro_rate",euro_rate);
+                    ed1.putFloat("won_rate",won_rate);
+                    ed1.apply();
+
+                    Toast.makeText(MainActivity.this,"汇率已更新",Toast.LENGTH_SHORT).show();
+
+
+                }
+            }//改写父类Hander的方法
+        };
+
+
+    }//加载页面时调用的方法，包括子进程
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && requestCode == 1){
-            Bundle bdl = data.getExtras();
-            dollar_rate = bdl.getDouble("dollar_rate_new_key",dollar_rate);
-            euro_rate = bdl.getDouble("euro_rate_new_key",euro_rate);
-            won_rate = bdl.getDouble("won_rate_new_key",won_rate);
+            SharedPreferences sp2 = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
+            dollar_rate = sp2.getFloat("dollar_rate",0.1406f);
+            euro_rate = sp2.getFloat("euro_rate",0.1276f);
+            won_rate = sp2.getFloat("won_rate",167.8471f);
         }
     } //接受数据的方法
 
@@ -56,18 +98,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.item1){
-            Intent config = new Intent(this,ConfigActivity.class);
-            Bundle bdl = new Bundle();
-            bdl.putDouble("dollar_rate_key",dollar_rate);
-            bdl.putDouble("euro_rate_key",euro_rate);
-            bdl.putDouble("won_rate_key",won_rate);
-            config.putExtras(bdl);
-
-            Log.i(TAG,"openOne: dollar_rate=" + dollar_rate);
-            Log.i(TAG,"openOne: euro_rate=" + euro_rate);
-            Log.i(TAG,"openOne: won_rate=" + won_rate);
-
-            startActivityForResult(config,1);
         }//菜单项1
         if(item.getItemId() == R.id.item2){
             TextView output = findViewById(R.id.textView8);
@@ -88,6 +118,11 @@ public class MainActivity extends AppCompatActivity {
         Button btn9 = findViewById(R.id.button9);
         Button btn10 = findViewById(R.id.button10);
         Button btn11 = findViewById(R.id.button11);
+
+        SharedPreferences sp2 = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
+        dollar_rate = sp2.getFloat("dollar_rate",0.1406f);
+        euro_rate = sp2.getFloat("euro_rate",0.1276f);
+        won_rate = sp2.getFloat("won_rate",167.8471f);
 
         int id1 = view.getId();
         if (id1 == btn8.getId()) {
@@ -112,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (symbol == 0 && dian <= 1) {
 
-                    double rmb = Double.parseDouble(str_rmb);
-                    double dollar = rmb * dollar_rate;
+                    float rmb = Float.parseFloat(str_rmb);
+                    float dollar = rmb * dollar_rate;
                     String str=String.valueOf(dollar);
                     output.setText(str);
                 } else {
@@ -142,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if (symbol == 0 && dian <= 1) {
-                    double rmb = Double.parseDouble(str_rmb);
-                    double euro = rmb * euro_rate;
+                    float rmb = Float.parseFloat(str_rmb);
+                    float euro = rmb * euro_rate;
                     String str=String.valueOf(euro);
                     output.setText(str);
                 } else {
@@ -174,8 +209,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if (symbol == 0 && dian <= 1) {
-                    double rmb = Double.parseDouble(str_rmb);
-                    double won = rmb * won_rate;
+                    Float rmb = Float.parseFloat(str_rmb);
+                    float won = rmb * won_rate;
                     String str=String.valueOf(won);
                     output.setText(str);
                 } else {
@@ -185,11 +220,11 @@ public class MainActivity extends AppCompatActivity {
         }//韩元兑换
         if (id1 == btn11.getId()) {
             Intent config = new Intent(this,ConfigActivity.class);
-            Bundle bdl = new Bundle();
-            bdl.putDouble("dollar_rate_key",dollar_rate);
-            bdl.putDouble("euro_rate_key",euro_rate);
-            bdl.putDouble("won_rate_key",won_rate);
-            config.putExtras(bdl);
+            //Bundle bdl = new Bundle();
+            //bdl.putDouble("dollar_rate_key",dollar_rate);
+            //bdl.putDouble("euro_rate_key",euro_rate);
+            //bdl.putDouble("won_rate_key",won_rate);
+            //config.putExtras(bdl);
 
             Log.i(TAG,"openOne: dollar_rate=" + dollar_rate);
             Log.i(TAG,"openOne: euro_rate=" + euro_rate);
@@ -200,7 +235,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }//汇率转换
-
 
     public void point(View view) {
         Button btn18 = findViewById(R.id.button18);
@@ -257,8 +291,7 @@ public class MainActivity extends AppCompatActivity {
 
     } //course3_1_2两支队伍计分
 
-
-    /*public void printText(View view) {
+    public void printText(View view) {
         Button btn3=findViewById(R.id.button3);
         Log.i(TAG,"onClick: ");
         int id=view.getId();
@@ -285,5 +318,90 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-    }//course_3_1_1温度转为华氏度*/
+    }//course_3_1_1温度转为华氏度
+
+    @Override
+    public void run() {
+        Log.i(TAG,"run: run().....");
+
+        //用于保存从网页中获取的汇率
+        Bundle bundle = new Bundle();
+
+        // msg.what = 5;
+//        URL url = null;
+//        try {
+//            url = new URL("http://www.usd-cny.com/bankofchina.htm");
+//            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+//            Log.i(TAG, "run: http.getResponseCode()=" + http.getResponseCode());
+//            Log.i(TAG, "run: getResponseMessage=" + http.getResponseMessage());
+//
+//            InputStream in = http.getInputStream();
+//            String html = inputStream2String(in);
+//            //Log.i(TAG, "run: html=" + html);
+//            //Document doc = Jsoup.parse(html);
+
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        Document doc = null;
+        try {
+            doc = Jsoup.connect("http://www.usd-cny.com/bankofchina.htm").get();
+            Log.i(TAG, "run: " + doc.title());
+            //获取table中的数据
+            Elements tables = doc.getElementsByTag("table");
+//            int i = 1;
+//            for(Element table : tables){
+//                Log.i(TAG, "run: table=["+i+"]=" + table);
+//                i++;
+//            }
+            Element table1 = tables.get(0);
+//            Log.i(TAG, "run: table1=" + table1);
+
+            //获取td中的数据
+            Elements tds = table1.getElementsByTag("td");
+            for(int i=0;i<tds.size();i+=6){
+                Element td1 = tds.get(i);
+                Element td2 = tds.get(i+5);
+                Log.i(TAG, "run: text=" + td1.text() + "-->" + td2.text());
+
+                if("美元".equals(td1.text())){
+                    bundle.putFloat("web_dollar_rate",100f/Float.parseFloat(td2.text()));
+                }else if("韩元".equals(td1.text())){
+                    bundle.putFloat("web_won_rate",100f/Float.parseFloat(td2.text()));
+                }else if("欧元".equals(td1.text())){
+                    bundle.putFloat("web_euro_rate",100f/Float.parseFloat(td2.text()));
+                }
+            }
+
+            Message msg = handler.obtainMessage(5);//从handler的消息队列中取出一个message
+            msg.obj = bundle;
+            handler.sendMessage(msg);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //msg.obj = "Hello from run()";
+        //handler.sendMessage(msg);
+
+    }//子线程中需要执行的代码，读取网页信息
+
+    private String inputStream2String(InputStream inputStream) throws IOException {
+        final int bufferSize = 1024;
+        final char[] buffer = new char[bufferSize];
+        final StringBuilder out = new StringBuilder();
+        Reader in = new InputStreamReader(inputStream, "gb2312");
+        while(true){
+            int rsz = in.read(buffer,0,buffer.length);
+            if(rsz<0) break;
+            out.append(buffer,0,rsz);
+        }
+        return out.toString();
+
+    }//把InputStream转换成String的方法
 }

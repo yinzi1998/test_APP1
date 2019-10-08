@@ -1,14 +1,15 @@
 package com.example.myapp1;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
-import android.nfc.Tag;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import static com.example.myapp1.R.id.editText9;
 
@@ -18,10 +19,9 @@ public class ConfigActivity extends AppCompatActivity {
     EditText text_euro = null;
     EditText text_won = null;
     Button btn12 = null;
-    double get_dollar = 0;
-    double get_euro = 0;
-    double get_won = 0;
-
+    float get_dollar = 0;
+    float get_euro = 0;
+    float get_won = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,21 +33,21 @@ public class ConfigActivity extends AppCompatActivity {
         text_won = findViewById(R.id.editText13);
         btn12 = findViewById(R.id.button12);
 
-        Intent intent = getIntent();
-        Bundle bdl = intent.getExtras();
-        get_dollar = bdl.getDouble("dollar_rate_key",0);
-        get_euro = bdl.getDouble("euro_rate_key",0);
-        get_won = bdl.getDouble("won_rate_key",0);
 
-        text_dollar.setText("Dollar rate: " + String.format("%f",get_dollar));
-        text_euro.setText("Euro rate: " + String.format("%f",get_euro));
-        text_won.setText("Won rate: " + String.format("%f",get_won));
+        SharedPreferences sp3 = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
+        get_dollar = sp3.getFloat("dollar_rate",0.1406f);
+        get_euro = sp3.getFloat("euro_rate",0.1276f);
+        get_won = sp3.getFloat("won_rate",167.8471f);
+
+        text_dollar.setText("Dollar rate: " + String.format("%.4f",get_dollar));
+        text_euro.setText("Euro rate: " + String.format("%.4f",get_euro));
+        text_won.setText("Won rate: " + String.format("%.4f",get_won));
 
         Log.i(TAG,"openOne: dollar_rate=" + get_dollar);
         Log.i(TAG,"openOne: euro_rate=" + get_euro);
         Log.i(TAG,"openOne: won_rate=" + get_won);
 
-    }
+    }//加载页面时调用的方法
 
     public void config(View view){
         int id = view.getId();
@@ -60,22 +60,22 @@ public class ConfigActivity extends AppCompatActivity {
             euro_str_new = euro_str_new.replace("Euro rate: ","");
             won_str_new = won_str_new.replace("Won rate: ","");
 
-            double dollar_rate_new = Float.parseFloat(dollar_str_new);
-            double euro_rate_new = Float.parseFloat(euro_str_new);
-            double won_rate_new = Float.parseFloat(won_str_new);
+            float dollar_rate_new = Float.parseFloat(dollar_str_new);
+            float euro_rate_new = Float.parseFloat(euro_str_new);
+            float won_rate_new = Float.parseFloat(won_str_new);
+
+            //通过XML文件传数据
+            SharedPreferences sp1 = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor ed1 = sp1.edit();
+            ed1.putFloat("dollar_rate",dollar_rate_new);
+            ed1.putFloat("euro_rate",euro_rate_new);
+            ed1.putFloat("won_rate",won_rate_new);
+            ed1.apply();
 
             Intent main = new Intent(this,MainActivity.class);
-            Bundle bdl = new Bundle();
-            bdl.putDouble("dollar_rate_new_key",dollar_rate_new);
-            bdl.putDouble("euro_rate_new_key",euro_rate_new);
-            bdl.putDouble("won_rate_new_key",won_rate_new);
-            main.putExtras(bdl);
             setResult(1,main);
-
-
             finish();
-
-        }
+        }//保存修改的汇率
 
     }
 }
