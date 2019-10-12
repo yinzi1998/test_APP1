@@ -34,17 +34,18 @@ public class MainActivity extends AppCompatActivity implements Runnable{
     float euro_rate;
     float won_rate;
     Handler handler;
+    private String updateDate = "";
 
     //创造页面，加载页面布局等时调用的方法，包括子进程
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.course_3_1_2);
+        setContentView(R.layout.course_3_1_3);
         Log.i(TAG, "onCreate: ");
 
+        //子进程响应
         Thread t = new Thread(this); //this表示当前接口Runable的run()方法，定义了一个线程t
         t.start();
-
         handler = new Handler(){
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -68,9 +69,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     ed1.apply();
 
                     Toast.makeText(MainActivity.this,"汇率已更新",Toast.LENGTH_SHORT).show();
-
-
-                }
+                }//子进程号为5时，动态读取网页汇率信息并且传到myrate.xml中
             }//改写父类Hander的方法
         };
 
@@ -122,23 +121,23 @@ public class MainActivity extends AppCompatActivity implements Runnable{
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState: ");
-        //ab两队计分的数据存入bundle中
-        String scorea = ((EditText)findViewById(R.id.editText10)).getText().toString();
-        String scoreb = ((EditText)findViewById(R.id.editText11)).getText().toString();
-        outState.putString("teama_score",scorea);
-        outState.putString("teamb_score",scoreb);
+//        Log.i(TAG, "onSaveInstanceState: ");
+//        //ab两队计分的数据存入bundle中
+//        String scorea = ((EditText)findViewById(R.id.editText10)).getText().toString();
+//        String scoreb = ((EditText)findViewById(R.id.editText11)).getText().toString();
+//        outState.putString("teama_score",scorea);
+//        outState.putString("teamb_score",scoreb);
     }
 
     //还原暂停后的数据，和onSaveInstanceState方法相对应
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.i(TAG, "onRestoreInstanceState: ");
-        String scorea = savedInstanceState.getString("teama_score");
-        String scoreb = savedInstanceState.getString("teamb_score");
-        ((EditText)findViewById(R.id.editText10)).setText(scorea);
-        ((EditText)findViewById(R.id.editText11)).setText(scoreb);
+//        super.onRestoreInstanceState(savedInstanceState);
+//        Log.i(TAG, "onRestoreInstanceState: ");
+//        String scorea = savedInstanceState.getString("teama_score");
+//        String scoreb = savedInstanceState.getString("teamb_score");
+//        ((EditText)findViewById(R.id.editText10)).setText(scorea);
+//        ((EditText)findViewById(R.id.editText11)).setText(scoreb);
     }
 
     //接受跳转界面的finish()数据的方法
@@ -161,23 +160,33 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         return true;
     }
 
-    //菜单项的处理事件
+    //菜单项的触发处理事件
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //菜单项1，打开RateListActivity
         if(item.getItemId() == R.id.item1){
-        }//菜单项1
+            //打开从网页动态读取的列表窗口
+            Intent list = new Intent(this,RateListActivity.class);
+            startActivity(list);
+            Log.i(TAG,"open RatelistActivity");
+        }
+        //菜单项2，打开ConfigActivity
         if(item.getItemId() == R.id.item2){
-            TextView output = findViewById(R.id.textView8);
-            output.setText("你打开了Item2");
-        }//菜单项2
+            Intent config = new Intent(this,ConfigActivity.class);
+            startActivity(config);
+            Log.i(TAG,"open ConfigAvtivity");
+        }
+        //菜单项3，打开RateListViewActivity
         if(item.getItemId() == R.id.item3){
-            TextView output = findViewById(R.id.textView8);
-            output.setText("你打开了Item3");
-        }//菜单项3
+            //打开通过ListView组件从网页动态读取的列表窗口
+            Intent listview = new Intent(this,RateListViewActivity.class);
+            startActivity(listview);
+            Log.i(TAG,"open RatelistViewActivity");
+        }
         return super.onOptionsItemSelected(item);
     }
 
-    //汇率转换
+    //汇率的按钮触发时间转换
     public void money(View view) {
         EditText input = findViewById(R.id.editText8);
         String str_rmb = input.getText().toString();
@@ -193,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         won_rate = sp2.getFloat("won_rate",167.8471f);
 
         int id1 = view.getId();
+        //美元兑换
         if (id1 == btn8.getId()) {
             if (str_rmb.length() == 0 || str_rmb == null) {
                 output.setText("请先输入人民币金额！");
@@ -223,7 +233,8 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     output.setText("请输入正确格式的金额！");
                 }
             }
-        }//美元兑换
+        }
+        //欧元兑换
         if (id1 == btn9.getId()) {
             if (str_rmb.length() == 0 || str_rmb == null) {
                 output.setText("请先输入人民币金额！");
@@ -254,7 +265,8 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     output.setText("请输入正确格式的金额！");
                 }
             }
-        }//欧元兑换
+        }
+        //韩元兑换
         if (id1 == btn10.getId()) {
             if (str_rmb.length() == 0 || str_rmb == null) {
                 Toast.makeText(this,"清闲输入人民币金额",Toast.LENGTH_SHORT).show();
@@ -285,23 +297,20 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     output.setText("请输入正确格式的金额！");
                 }
             }
-        }//韩元兑换
+        }
+        //转到汇率配置界面
         if (id1 == btn11.getId()) {
             Intent config = new Intent(this,ConfigActivity.class);
-            //Bundle bdl = new Bundle();
-            //bdl.putDouble("dollar_rate_key",dollar_rate);
-            //bdl.putDouble("euro_rate_key",euro_rate);
-            //bdl.putDouble("won_rate_key",won_rate);
-            //config.putExtras(bdl);
 
-            Log.i(TAG,"openOne: dollar_rate=" + dollar_rate);
-            Log.i(TAG,"openOne: euro_rate=" + euro_rate);
-            Log.i(TAG,"openOne: won_rate=" + won_rate);
-
+//用bundle转发数据，但是已经写道myrate.xml中了，不需要了
+//            Bundle bdl = new Bundle();
+//            bdl.putDouble("dollar_rate_key",dollar_rate);
+//            bdl.putDouble("euro_rate_key",euro_rate);
+//            bdl.putDouble("won_rate_key",won_rate);
+//            config.putExtras(bdl);
+            Log.i(TAG,"open ConfigAvtivity");
             startActivityForResult(config,1);
-        }//汇率配置界面
-
-
+        }
     }
 
     //course3_1_2两支队伍计分
@@ -390,7 +399,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         }
     }
 
-    //子线程中需要执行的代码，读取网页信息
+    //子线程具体实现代码，读取网页的汇率信息并添加到bundle中
     @Override
     public void run() {
         Log.i(TAG,"run: run().....");
@@ -398,7 +407,8 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         //用于保存从网页中获取的汇率
         Bundle bundle = new Bundle();
 
-        // msg.what = 5;
+//用URL，不用jsoup的网页读取方法
+//        msg.what = 5;
 //        URL url = null;
 //        try {
 //            url = new URL("http://www.usd-cny.com/bankofchina.htm");
@@ -417,6 +427,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
 //            e.printStackTrace();
 //        }
 
+       //用jsoup方法读取网页内容
         Document doc = null;
         try {
             doc = Jsoup.connect("http://www.usd-cny.com/bankofchina.htm").get();
@@ -446,20 +457,13 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     bundle.putFloat("web_euro_rate",100f/Float.parseFloat(td2.text()));
                 }
             }
-
-            Message msg = handler.obtainMessage(5);//从handler的消息队列中取出一个message
-            msg.obj = bundle;
-            handler.sendMessage(msg);
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-        //msg.obj = "Hello from run()";
-        //handler.sendMessage(msg);
-
+        Message msg = handler.obtainMessage(5);//从handler的消息队列中取出一个message
+        msg.obj = bundle;
+        handler.sendMessage(msg);
     }
 
     //把InputStream转换成String的方法
