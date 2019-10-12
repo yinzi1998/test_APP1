@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements Runnable{
     private static final String TAG = "MainActivity";
@@ -43,9 +46,22 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         setContentView(R.layout.course_3_1_3);
         Log.i(TAG, "onCreate: ");
 
-        //子进程响应
-        Thread t = new Thread(this); //this表示当前接口Runable的run()方法，定义了一个线程t
-        t.start();
+        //判断是否要更新
+        SharedPreferences sp = getSharedPreferences("myrate",Activity.MODE_PRIVATE);
+        updateDate = sp.getString("update_date","");
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        final String todayStr = sdf.format(today);
+        if(!todayStr.equals(updateDate)){
+            //子进程响应
+            Thread t = new Thread(this); //this表示当前接口Runable的run()方法，定义了一个线程t
+            t.start();
+
+            Log.i(TAG, "onCreate: 需要更新");
+        }else{
+            Log.i(TAG, "onCreate: 不需要更新");
+        }
+
         handler = new Handler(){
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -60,12 +76,13 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     Log.i(TAG,"handleMessage: euro_rate " + euro_rate);
                     Log.i(TAG,"handleMessage: won_rate " + won_rate);
 
-                    //写到myrate.xml中
+                    //汇率和日期写到myrate.xml中
                     SharedPreferences sp1 = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
                     SharedPreferences.Editor ed1 = sp1.edit();
                     ed1.putFloat("dollar_rate",dollar_rate);
                     ed1.putFloat("euro_rate",euro_rate);
                     ed1.putFloat("won_rate",won_rate);
+                    ed1.putString("update_date",todayStr);
                     ed1.apply();
 
                     Toast.makeText(MainActivity.this,"汇率已更新",Toast.LENGTH_SHORT).show();
@@ -168,20 +185,20 @@ public class MainActivity extends AppCompatActivity implements Runnable{
             //打开从网页动态读取的列表窗口
             Intent list = new Intent(this,RateListActivity.class);
             startActivity(list);
-            Log.i(TAG,"open RatelistActivity");
+            Log.i(TAG, "onOptionsItemSelected: caidan_openList");
         }
         //菜单项2，打开ConfigActivity
         if(item.getItemId() == R.id.item2){
             Intent config = new Intent(this,ConfigActivity.class);
             startActivity(config);
-            Log.i(TAG,"open ConfigAvtivity");
+            Log.i(TAG, "onOptionsItemSelected: caidan_openConfig");
         }
         //菜单项3，打开RateListViewActivity
         if(item.getItemId() == R.id.item3){
             //打开通过ListView组件从网页动态读取的列表窗口
             Intent listview = new Intent(this,RateListViewActivity.class);
             startActivity(listview);
-            Log.i(TAG,"open RatelistViewActivity");
+            Log.i(TAG, "onOptionsItemSelected: caidan_openListView");
         }
         return super.onOptionsItemSelected(item);
     }
