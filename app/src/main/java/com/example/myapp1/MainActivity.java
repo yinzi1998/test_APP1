@@ -57,8 +57,12 @@ public class MainActivity extends AppCompatActivity implements Runnable{
             Thread t = new Thread(this); //this表示当前接口Runable的run()方法，定义了一个线程t
             t.start();
 
+            Log.i(TAG, "onCreate: myrate中日期 " + updateDate);
+            Log.i(TAG, "onCreate: 今天日期 " + todayStr);
             Log.i(TAG, "onCreate: 需要更新");
         }else{
+            Log.i(TAG, "onCreate: myrate中日期 " + updateDate);
+            Log.i(TAG, "onCreate: 今天日期 " + todayStr);
             Log.i(TAG, "onCreate: 不需要更新");
         }
 
@@ -72,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     euro_rate = bdl.getFloat("web_euro_rate");
                     won_rate = bdl.getFloat("web_won_rate");
 
-                    Log.i(TAG,"handleMessage: dollar_rate " + dollar_rate);
-                    Log.i(TAG,"handleMessage: euro_rate " + euro_rate);
-                    Log.i(TAG,"handleMessage: won_rate " + won_rate);
+                    Log.i(TAG,"handleMessage: 网页获取dollar_rate " + dollar_rate);
+                    Log.i(TAG,"handleMessage: 网页获取euro_rate " + euro_rate);
+                    Log.i(TAG,"handleMessage: 网页获取won_rate " + won_rate);
 
                     //汇率和日期写到myrate.xml中
                     SharedPreferences sp1 = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     ed1.putString("update_date",todayStr);
                     ed1.apply();
 
-                    Toast.makeText(MainActivity.this,"汇率已更新",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,"今日汇率已更新",Toast.LENGTH_SHORT).show();
                 }//子进程号为5时，动态读取网页汇率信息并且传到myrate.xml中
             }//改写父类Hander的方法
         };
@@ -185,20 +189,20 @@ public class MainActivity extends AppCompatActivity implements Runnable{
             //打开从网页动态读取的列表窗口
             Intent list = new Intent(this,RateListActivity.class);
             startActivity(list);
-            Log.i(TAG, "onOptionsItemSelected: caidan_openList");
+            Log.i(TAG, "onOptionsItemSelected: 菜单打开RateListActivity");
         }
         //菜单项2，打开ConfigActivity
         if(item.getItemId() == R.id.item2){
             Intent config = new Intent(this,ConfigActivity.class);
             startActivity(config);
-            Log.i(TAG, "onOptionsItemSelected: caidan_openConfig");
+            Log.i(TAG, "onOptionsItemSelected: 菜单打开ConfigActivity");
         }
         //菜单项3，打开RateListViewActivity
         if(item.getItemId() == R.id.item3){
             //打开通过ListView组件从网页动态读取的列表窗口
             Intent listview = new Intent(this,RateListViewActivity.class);
             startActivity(listview);
-            Log.i(TAG, "onOptionsItemSelected: caidan_openListView");
+            Log.i(TAG, "onOptionsItemSelected: 菜单打开RateListViewActivity");
         }
         return super.onOptionsItemSelected(item);
     }
