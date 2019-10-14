@@ -66,7 +66,7 @@ public class RateListViewActivity extends AppCompatActivity implements Runnable{
                 Element td1 = tds.get(i);
                 Element td2 = tds.get(i+5);
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("itemTitle" , td1.text() + "的Rate: ");
+                map.put("itemTitle" , td1.text());
                 map.put("itemDetail" , td2.text());
                 listItems.add(map);
                 Log.i(TAG, "run: listItem" + td1.text() + "-->" + td2.text());

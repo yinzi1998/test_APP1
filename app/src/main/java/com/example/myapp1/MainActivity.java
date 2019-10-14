@@ -290,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         //韩元兑换
         if (id1 == btn10.getId()) {
             if (str_rmb.length() == 0 || str_rmb == null) {
-                Toast.makeText(this,"清闲输入人民币金额",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"请输入人民币金额",Toast.LENGTH_SHORT).show();
                 //output.setText("请先输入人民币金额！");
             } else {
                 char[] ch_rmb = str_rmb.toCharArray();
