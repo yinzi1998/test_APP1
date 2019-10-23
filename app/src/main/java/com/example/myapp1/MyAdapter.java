@@ -14,6 +14,7 @@ import java.util.Map;
 public class MyAdapter extends ArrayAdapter {
     private static final String TAG = "MyAdapter";
 
+    //构造函数
     public MyAdapter(Context context , int resource , ArrayList<HashMap<String , String>> list){
         super(context , resource , list);
     }

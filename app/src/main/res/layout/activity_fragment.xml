@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FrameActivity">
+
+    <!--下面是fragment组件-->
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="com.example.myapp1.HomeFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="14"/>
+
+    <fragment
+        android:id="@+id/fragment_func"
+        android:name="com.example.myapp1.FuncFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="14"/>
+
+    <fragment
+        android:id="@+id/fragment_setting"
+        android:name="com.example.myapp1.SettingFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="14"/>
+
+    <!--下面是用于控制fragment显示的开关-->
+    <RadioGroup
+        android:id="@+id/bottomGroup"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_weight="0.01"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioHome"
+            style="@style/rg_btn_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rdo_home_label" />
+
+        <RadioButton
+            android:id="@+id/radioFunc"
+            style="@style/rg_btn_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rdo_func_label" />
+
+        <RadioButton
+            android:id="@+id/radioSetting"
+            style="@style/rg_btn_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rdo_setting_label" />
+
+    </RadioGroup>
+
+</LinearLayout>

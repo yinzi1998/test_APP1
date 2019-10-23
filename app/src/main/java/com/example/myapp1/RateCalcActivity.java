@@ -47,7 +47,7 @@ public class RateCalcActivity extends AppCompatActivity {
                     float rate_new = 100f/rate;
                     String rmbStr = editable.toString();
                     float rmb = Float.parseFloat(rmbStr);
-                    show2.setText(rmbStr + "人民币转换为：" + rmb*rate_new + title);
+                    show2.setText(rmbStr + "人民币转换为\n" + rmb*rate_new + title);
                 }
             }
         });

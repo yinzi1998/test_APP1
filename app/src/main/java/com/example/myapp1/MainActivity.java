@@ -204,6 +204,19 @@ public class MainActivity extends AppCompatActivity implements Runnable{
             startActivity(listview);
             Log.i(TAG, "onOptionsItemSelected: 菜单打开RateListViewActivity");
         }
+        if(item.getItemId() == R.id.item4){
+            //打开通过ListView组件从网页动态读取的列表窗口
+            Intent gridview = new Intent(this,RateGridViewActivity.class);
+            startActivity(gridview);
+            Log.i(TAG, "onOptionsItemSelected: 菜单打开RateGridViewActivity");
+        }
+        if(item.getItemId() == R.id.item5){
+            //打开通过数据库读取的列表窗口
+            Intent databaseview = new Intent(this,RateDataBaseActivity.class);
+            startActivity(databaseview);
+            Log.i(TAG, "onOptionsItemSelected: 菜单打开RateDataBaseActivity");
+
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -455,14 +468,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
             Log.i(TAG, "run: " + doc.title());
             //获取table中的数据
             Elements tables = doc.getElementsByTag("table");
-//            int i = 1;
-//            for(Element table : tables){
-//                Log.i(TAG, "run: table=["+i+"]=" + table);
-//                i++;
-//            }
             Element table1 = tables.get(0);
-//            Log.i(TAG, "run: table1=" + table1);
-
             //获取td中的数据
             Elements tds = table1.getElementsByTag("td");
             for(int i=0;i<tds.size();i+=6){

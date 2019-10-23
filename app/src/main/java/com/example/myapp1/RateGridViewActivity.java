@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,19 +19,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RateListViewActivity extends AppCompatActivity implements Runnable, AdapterView.OnItemClickListener {
-    private static final String TAG = "RateListViewActivity";
+public class RateGridViewActivity extends AppCompatActivity implements Runnable{
+    private static final String TAG = "RateGridViewActivity";
     Handler handler;
     private ArrayList<HashMap<String,String>> listItems;
     MyAdapter myAdapter;
 
-    //创造页面，加载页面布局等时调用的方法，包括子进程
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rate_list_view);
+        setContentView(R.layout.activity_rate_grid_view);
 
-        //子进程响应，通过listView组件获取网页数据
         Thread t = new Thread(this); //this表示当前接口Runable的run()方法，定义了一个线程t
         t.start();
         handler = new Handler() {
@@ -42,19 +38,15 @@ public class RateListViewActivity extends AppCompatActivity implements Runnable,
                 super.handleMessage(msg);
                 if (msg.what == 7) {
                     ArrayList<HashMap<String,String>> listItems1 = (ArrayList<HashMap<String,String>>)msg.obj;
-                    ListView listView = (ListView)findViewById(R.id.rateList);
-                    myAdapter = new MyAdapter(RateListViewActivity.this , R.layout.list_item , listItems1);
+                    GridView listView = (GridView)findViewById(R.id.rategrid);
+                    myAdapter = new MyAdapter(RateGridViewActivity.this , R.layout.list_item , listItems1);
                     listView.setAdapter(myAdapter);
-                    //没有数据的时候显示nodata的TextView
-                    listView.setEmptyView(findViewById(R.id.nodata));
-                    listView.setOnItemClickListener(RateListViewActivity.this);
                 }
 
             }
         };
     }
 
-    //子进程实现方法，从网页上动态获取利率信息并且存放到list中
     @Override
     public void run() {
         List<String> list1 = new ArrayList<String>();
@@ -86,14 +78,5 @@ public class RateListViewActivity extends AppCompatActivity implements Runnable,
         Message msg = handler.obtainMessage(7);//从handler的消息队列中取出一个message
         msg.obj = listItems;
         handler.sendMessage(msg);
-    }
-
-    //列表每一行的Item的监听事件操作，删除一行
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Log.i(TAG, "onItemClick: id= " + id);
-
-        myAdapter.remove(adapterView.getItemAtPosition(position));
-        myAdapter.notifyDataSetChanged();
     }
 }

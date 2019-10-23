@@ -36,9 +36,9 @@ public class ConfigActivity extends AppCompatActivity {
 
 
         SharedPreferences sp3 = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
-        get_dollar = sp3.getFloat("dollar_rate",0.1406f);
-        get_euro = sp3.getFloat("euro_rate",0.1276f);
-        get_won = sp3.getFloat("won_rate",167.8471f);
+        get_dollar = sp3.getFloat("dollar_rate",0f);
+        get_euro = sp3.getFloat("euro_rate",0f);
+        get_won = sp3.getFloat("won_rate",0f);
 
         text_dollar.setText("Dollar rate: " + String.format("%.4f",get_dollar));
         text_euro.setText("Euro rate: " + String.format("%.4f",get_euro));

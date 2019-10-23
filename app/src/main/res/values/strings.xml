@@ -1,4 +1,13 @@
 <resources>
+    <string name="approve">Approval</string>
+    <string name="oppose">Oppose</string>
+    <string name="abstain">Abstain</string>
+    <string name="vp_first_fragme">First ViewPager Fragment Page</string>
+    <string name="vp_second_fragme">Second ViewPager Fragment Page</string>
+    <string name="vp_third_fragme">Third ViewPager Fragment Page</string>
+    <string name="rdo_home_label">Home</string>
+    <string name="rdo_func_label">Function</string>
+    <string name="rdo_setting_label">Setting</string>
     <string name="rate_item_input">Input RMB</string>
     <string name="app_name">MyApp1</string>
     <string name="btn_ok">OK</string>
@@ -22,4 +31,6 @@
     <string name="birth_textView">Birthday Card</string>
     <string name="birth_multilineText">Best Wish To You</string>
     <string name="etext_temperature">请输入温度</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -23,4 +23,13 @@
     <string name="btn_won">韩元</string>
     <string name="btn_config">配置汇率</string>
     <string name="rate_item_input">请输入人民币</string>
+    <string name="rdo_func_label">功能</string>
+    <string name="rdo_home_label">首页</string>
+    <string name="rdo_setting_label">设置</string>
+    <string name="vp_first_fragme">第一个VP界面</string>
+    <string name="vp_second_fragme">第二个VP界面</string>
+    <string name="vp_third_fragme">第三个VP界面</string>
+    <string name="abstain">弃权</string>
+    <string name="approve">赞成</string>
+    <string name="oppose">反对</string>
 </resources>

@@ -11,7 +11,7 @@
         android:id="@+id/title2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="66dp"
+        android:layout_marginTop="6dp"
         android:text="TextView"
         android:textSize="36sp"
         android:gravity="center" />
@@ -33,7 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
-        android:text="@string/textView1"
         android:textSize="26sp"
         android:gravity="center"/>
 </LinearLayout>

@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--获得访问网页的权限-->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!--获得手机震动的权限-->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,10 +17,44 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RateCalcActivity"></activity>
-        <activity android:name=".RateListViewActivity"></activity>
-        <activity android:name=".RateListActivity"></activity>
-        <activity android:name=".ConfigActivity"></activity>
+        <activity android:name=".ShakeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".CSVoteActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ViewPgActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".FrameActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".RateDataBaseActivity" />
+        <activity
+            android:name=".RateGridViewActivity"
+            android:screenOrientation="sensor" />
+        <activity
+            android:name=".RateCalcActivity"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity android:name=".RateListViewActivity" />
+        <activity android:name=".RateListActivity" />
+        <activity android:name=".ConfigActivity" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="sensor">
