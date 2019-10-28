@@ -50,7 +50,7 @@ public class CSVoteActivity extends AppCompatActivity {
             stringBuffer.append("r=").append(URLEncoder.encode(voteStr, "utf-8"));
 
             byte[] data = stringBuffer.toString().getBytes();
-            String urlPath = "http://...";
+            String urlPath = "http://localhost:8080/";
             URL url = new URL(urlPath);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
